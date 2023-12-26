@@ -1,3 +1,4 @@
+
 const express = require('express');
 const mongoose = require('mongoose');
 const routes = require('./routes'); 
@@ -18,9 +19,9 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/social-network-
 });
 
 // routes
-app.use('/api', routes);
+app.use('/api', routes); // use the routes defined in the 'routes' module
 
-// default response for any other request ( 
+// default response for any other request
 app.use((req, res) => {
   res.status(404).send("404 Error: Not Found");
 });
