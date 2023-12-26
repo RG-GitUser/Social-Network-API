@@ -1,4 +1,4 @@
-const User = require('../models/User'); // require User model
+const { User, Thought } = require('../models');; // require User model
 
 exports.getAllUsers = async (req, res) => {
   try {
@@ -67,7 +67,7 @@ exports.updateUser = async (req, res) => {   // update user logic
 
 
  
-  exports.addFriend = async (req, res) => {        // logic for adding a friend
+  exports.addFriend = async (req, res) => {  // logic for adding a friend
     const userId = req.params.id; // ID of the user who will be added 
     const friendId = req.body.friendId; // ID of the friend will be added
   

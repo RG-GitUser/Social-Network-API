@@ -1,4 +1,4 @@
-const { Thought, User } = require('../models/Thought');
+const { Thought, User } =  require('./models');
 
 exports.getAllThoughts = async (req, res) => {  // logic to get all thoughts
   try {
