@@ -88,3 +88,26 @@ exports.deleteThought = async (req, res) => {   // logic to delete a thought
     res.status(500).json({ message: error.message });
   }
 };
+                                                          
+exports.createReaction = async (req, res) => {   // logic for creating a reaction
+  try {
+    const { thoughtId, userId, reactionText } = req.body;
+
+    // check if the thought exists
+    const thought = await Thought.findById(thoughtId);
+    if (!thought) {
+      return res.status(404).json({ message: 'Thought not found' });
+    }
+
+    // create a new reaction
+    const reaction = await Reaction.create({ reactionText, userId });
+
+    // add the reaction to the thought's reactions array
+    thought.reactions.push(reaction._id);
+    await thought.save();
+
+    res.status(201).json({ message: 'Reaction created successfully', reaction });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
