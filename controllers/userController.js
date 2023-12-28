@@ -19,6 +19,13 @@ exports.createUser = async (req, res) => {       // create a user
 };
  
 
+exports.getUserById = async (req, res) => {
+  
+}
+
+
+
+
 exports.updateUser = async (req, res) => {   // update user logic
     const userId = req.params.id;
   

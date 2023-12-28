@@ -1,4 +1,4 @@
-const { Thought, User } = require('../models/Thought');
+const { Thought, User, Reaction } = require('../models/Thought');
 
 exports.getAllThoughts = async (req, res) => {  // logic to get all thoughts
   try {
@@ -107,6 +107,35 @@ exports.createReaction = async (req, res) => {   // logic for creating a reactio
     await thought.save();
 
     res.status(201).json({ message: 'Reaction created successfully', reaction });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.deleteReaction = async (req, res) => {  // delete reaction logic
+  try {
+    const { thoughtId, reactionId } = req.params;
+
+    // check if the thought exists
+    const thought = await Thought.findById(thoughtId);
+    if (!thought) {
+      return res.status(404).json({ message: 'Thought not found' });
+    }
+
+    // check if the reaction exists
+    const reaction = await Reaction.findById(reactionId);
+    if (!reaction) {
+      return res.status(404).json({ message: 'Reaction not found' });
+    }
+
+    // remove the reaction from the thought's reactions array
+    thought.reactions.pull(reaction._id);
+    await thought.save();
+
+    // delete the reaction
+    await reaction.remove();
+
+    res.json({ message: 'Reaction deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
