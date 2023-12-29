@@ -40,6 +40,10 @@ userSchema.virtual('friendCount').get(function () {
   return this.friends.length;
 });
 
+userSchema.methods.removeUser = async function () {
+  return this.remove();
+};
+
 const User = model('User', userSchema);
 
 module.exports = User;

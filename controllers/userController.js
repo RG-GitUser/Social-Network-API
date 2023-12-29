@@ -37,8 +37,6 @@ exports.getUserById = async (req, res) => { // logic to get user by ID
 };
 
 
-
-
 exports.updateUser = async (req, res) => {   // update user logic
     const userId = req.params.id;
   
@@ -65,26 +63,22 @@ exports.updateUser = async (req, res) => {   // update user logic
 
 
 
-  exports.deleteUser = async (req, res) => {   // delete user logic
+  exports.deleteUser = async (req, res) => { // delete user logic
     const userId = req.params.id;
   
     try {
-      // find the user by ID
-      const user = await User.findById(userId);
+      // use findByIdAndDelete to remove the user from the database
+      const deletedUser = await User.findByIdAndDelete(userId);
   
-      if (!user) {
+      if (!deletedUser) {
         return res.status(404).json({ message: 'User not found' });
       }
   
-      // remove the user from the database
-      await user.remove();
-  
-      res.json({ message: 'User successfully deleted!' });
+      res.json({ message: 'User successfully deleted!', deletedUser });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   };
-
 
  
   exports.addFriend = async (req, res) => {  // logic for adding a friend
