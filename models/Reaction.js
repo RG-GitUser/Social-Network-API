@@ -1,7 +1,7 @@
 const { Schema, Types } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
-const reactionSchema = new Schema(   // model for Reaction (embeded in the "Thought" model)
+const reactionSchema = new Schema(   // model for Reaction (embeded in thought model)
   {
     reactionId: {
       type: Types.ObjectId,

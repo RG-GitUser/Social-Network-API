@@ -14,15 +14,11 @@ const thoughtSchema = new Schema(
       default: Date.now,
       get: (createdAtVal) => dateFormat(createdAtVal),
     },
-    username: {
-      type: String,
-      required: true,
-    },
     reactions: [
       {
         reactionId: {
           type: Types.ObjectId,
-          default: () => new Types.ObjectId(),  // contains Types.ObjectId - In Mongoose this represents a unique identifyer for the reaction  
+          default: () => new Types.ObjectId(),  // this represents a unique identifyer for the reaction  
         },
         reactionBody: {
           type: String,
