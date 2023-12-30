@@ -1,5 +1,7 @@
 const { Thought, User, Reaction } = require('../models');
 
+// Thought logic 
+
 exports.getAllThoughts = async (req, res) => {
   try {
     const thoughts = await Thought.find().sort({ createdAt: -1 });
@@ -88,12 +90,15 @@ exports.deleteThought = async (req, res) => {  // delete thought logic
   }
 };
 
+
+// Reaction logic 
+
 exports.createReaction = async (req, res) => {
   try {
-    const { thoughtId, userId, reactionText } = req.body;
+    const { thoughtId, userId, username, reactionBody } = req.body;
 
-    if (!userId || !reactionText) {
-      return res.status(400).json({ message: 'userId and reactionText are required' });
+    if (!userId || !username || !reactionBody) {
+      return res.status(400).json({ message: 'userId, username, and reactionBody are required' });
     }
 
     const thought = await Thought.findById(thoughtId);
@@ -101,9 +106,12 @@ exports.createReaction = async (req, res) => {
       return res.status(404).json({ message: 'Thought not found' });
     }
 
-    const reaction = await Reaction.create({ reactionText, userId });
+    const reaction = await Reaction.create({
+      username,
+      reactionBody,
+    });
 
-    thought.reactions.push(reaction._id);
+    thought.reactions.push(reaction);
     await thought.save();
 
     res.status(201).json({ message: 'Reaction created successfully', data: { reaction } });
@@ -111,6 +119,7 @@ exports.createReaction = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 exports.deleteReaction = async (req, res) => {
   try {
