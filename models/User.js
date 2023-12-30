@@ -41,8 +41,9 @@ userSchema.virtual('friendCount').get(function () {
 });
 
 userSchema.methods.removeUser = async function () {
-  return this.remove();
+  return this.model('User').findByIdAndDelete(this._id);
 };
+
 
 const User = model('User', userSchema);
 

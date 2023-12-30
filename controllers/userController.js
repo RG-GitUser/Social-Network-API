@@ -150,3 +150,5 @@ exports.updateUser = async (req, res) => {   // update user logic
       res.status(500).json({ message: error.message });
     }
   };
+
+  
