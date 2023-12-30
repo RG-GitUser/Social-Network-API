@@ -68,21 +68,21 @@ exports.updateThought = async (req, res) => {
   }
 };
 
-exports.deleteThought = async (req, res) => {
+exports.deleteThought = async (req, res) => {  // delete thought logic
   const thoughtId = req.params.id;
 
   try {
-    const thought = await Thought.findByIdAndDelete(thoughtId);
+    // check if the thought with the given ID exists
+    const thoughtToDelete = await Thought.findById(thoughtId);
 
-    if (!thought) {
+    if (!thoughtToDelete) {
       return res.status(404).json({ message: 'Thought not found' });
     }
 
-    const user = await User.findById(thought.userId);
-    user.thoughts.pull(thought._id);
-    await user.save();
+    
+    await thoughtToDelete.remove(); // using Mongoose's built-in remove method
 
-    res.json({ message: 'Thought deleted successfully', data: { thought } });
+    res.json({ message: 'Thought successfully deleted!', thoughtToDelete });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
