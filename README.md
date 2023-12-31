@@ -1,7 +1,7 @@
 # Social-Network-API
 
 ## Description
-In this project, I have created a "Social Network API" to run requests in the application, "Insomnia". Using the back-end we can create users, thoughts and add friends. This API also includes the ability to delete/update said users, thoughts and friends. 
+In this project, I have created a "Social Network API" to run requests in the application, "Insomnia". Using the back-end we can create users, thoughts and add friends. This API also includes the ability to delete/update said users, thoughts and friends. As a database, MongooseDB Compass keeps track of all our data structured between "Thought" and "User" models. 
 
 ### Installation
 From the "Social-Network-API" repository (https://https://github.com/RG-GitUser/Social-Network-API) select the "Code" dropdown.
