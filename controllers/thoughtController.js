@@ -129,29 +129,23 @@ exports.createReaction = async (req, res) => {
 
 
 exports.deleteReaction = async (req, res) => {
-  try {
-    const { thoughtId, reactionId } = req.params;
+  const thoughtId = req.params.thoughtId;
+  const reactionId = req.params.reactionId;
 
+  try {
     const thought = await Thought.findById(thoughtId);
     if (!thought) {
       return res.status(404).json({ message: 'Thought not found' });
     }
 
-    const reaction = await Reaction.findById(reactionId);
-    if (!reaction) {
-      return res.status(404).json({ message: 'Reaction not found' });
-    }
+    // Use filter to create a new array without the specified reaction
+    thought.reactions = thought.reactions.filter(
+      (reaction) => reaction._id.toString() !== reactionId
+    );
 
-    if (reaction.userId.toString() !== req.user.id) {
-      return res.status(403).json({ message: 'You are not authorized to delete this reaction' });
-    }
-
-    thought.reactions.pull(reaction._id);
     await thought.save();
 
-    await reaction.remove();
-
-    res.json({ message: 'Reaction deleted successfully' });
+    res.json({ message: 'Reaction successfully deleted!', reactionId });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -81,40 +81,33 @@ exports.updateUser = async (req, res) => {   // update user logic
   };
 
  
-  exports.addFriend = async (req, res) => {  // logic for adding a friend
-    const userId = req.params.id; // ID of the user who will be added 
-    const friendId = req.body.friendId; // ID of the friend will be added
-  
-    try { 
-      // find the user by ID
-      const user = await User.findById(userId);
-  
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-  
-      // check if the friendId is valid 
-      if (!friendId) {
-        return res.status(400).json({ message: 'Invalid friend ID' });
-      }
-  
-      // check if the friendId is already in the user's friend list
-      if (user.friends.includes(friendId)) {
-        return res.status(400).json({ message: 'Friend already added' });
-      }
-  
-      // add the friendId to the user's friend list
-      user.friends.push(friendId);
-  
-      // save the updated user to the database
-      await user.save();
-  
-      res.json({ message: 'Friend added successfully', user });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  };
+  exports.addFriend = async (req, res) => {
+    const userId = req.params.userId; // Use "userId" instead of "id"
+    const friendId = req.body.friendId;
 
+    try {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (!friendId) {
+            return res.status(400).json({ message: 'Invalid friend ID' });
+        }
+
+        if (user.friends.includes(friendId)) {
+            return res.status(400).json({ message: 'Friend already added' });
+        }
+
+        user.friends.push(friendId);
+        await user.save();
+
+        res.json({ message: 'Friend added successfully', user });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
 
   exports.removeFriend = async (req, res) => { // logic to remove friend
