@@ -49,7 +49,7 @@ exports.createThought = async (req, res) => {
   }
 };
 
-exports.updateThought = async (req, res) => {
+exports.updateThought = async (req, res) => {  // update thought logic
   const thoughtId = req.params.id;
   const { thoughtText } = req.body;
 
@@ -70,19 +70,22 @@ exports.updateThought = async (req, res) => {
   }
 };
 
-exports.deleteThought = async (req, res) => {  // delete thought logic
+exports.deleteThought = async (req, res) => { // delete thought logic 
   const thoughtId = req.params.id;
 
   try {
-    // check if the thought with the given ID exists
     const thoughtToDelete = await Thought.findById(thoughtId);
 
     if (!thoughtToDelete) {
       return res.status(404).json({ message: 'Thought not found' });
     }
 
-    
-    await thoughtToDelete.remove(); // using Mongoose's built-in remove method
+    // Use deleteOne to remove the thought by its ID
+    const result = await Thought.deleteOne({ _id: thoughtId });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Thought not found' });
+    }
 
     res.json({ message: 'Thought successfully deleted!', thoughtToDelete });
   } catch (error) {
@@ -97,13 +100,17 @@ exports.createReaction = async (req, res) => {
   try {
     const { thoughtId, userId, username, reactionBody } = req.body;
 
-    if (!userId || !username || !reactionBody) {
-      return res.status(400).json({ message: 'userId, username, and reactionBody are required' });
+    if (!userId || !reactionBody) {
+      return res.status(400).json({ message: 'userId and reactionBody are required' });
     }
 
     const thought = await Thought.findById(thoughtId);
     if (!thought) {
       return res.status(404).json({ message: 'Thought not found' });
+    }
+
+    if (!username || !reactionBody) {
+      return res.status(400).json({ message: 'username and reactionBody are required' });
     }
 
     const reaction = await Reaction.create({
