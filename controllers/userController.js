@@ -110,38 +110,33 @@ exports.updateUser = async (req, res) => {   // update user logic
 };
 
 
-  exports.removeFriend = async (req, res) => { // logic to remove friend
-    const userId = req.params.id; // ID of user who is deleting a friend
-    const friendId = req.body.friendId; // ID of the friend being removed
-  
-    try {
+exports.removeFriend = async (req, res) => {
+  const userId = req.params.userId;
+  const friendId = req.params.friendId;
+
+  try {
       // find the user by ID
       const user = await User.findById(userId);
-  
+
       if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+          return res.status(404).json({ message: 'User not found' });
       }
-  
-      // check if the friendId is valid 
-      if (!friendId) {
-        return res.status(400).json({ message: 'Invalid friend ID' });
-      }
-  
+
       // check if the friendId is in the user's friend list
       if (!user.friends.includes(friendId)) {
-        return res.status(400).json({ message: 'Friend not found in the user\'s friend list' });
+          return res.status(400).json({ message: 'Friend not found in the user\'s friend list' });
       }
-  
+
       // remove the friendId from the user's friend list
       user.friends = user.friends.filter(id => id.toString() !== friendId.toString());
-  
+
       // save the updated user to the database
       await user.save();
-  
+
       res.json({ message: 'Friend removed successfully', user });
-    } catch (error) {
+  } catch (error) {
       res.status(500).json({ message: error.message });
-    }
-  };
+  }
+};
 
   

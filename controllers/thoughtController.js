@@ -138,7 +138,7 @@ exports.deleteReaction = async (req, res) => {
       return res.status(404).json({ message: 'Thought not found' });
     }
 
-    // Use filter to create a new array without the specified reaction
+    // use filter to create a new array without the specified reaction
     thought.reactions = thought.reactions.filter(
       (reaction) => reaction._id.toString() !== reactionId
     );
