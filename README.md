@@ -20,7 +20,8 @@ From the backend, users are able to create, update and delete thoughts, users an
 ### Screenshot: 
 
 ![Alt text](socialnetworkapi.png)
-![Alt text](mongodbsnip.png) 
+![mongodbsnip](https://github.com/RG-GitUser/Social-Network-API/assets/139709113/fcad5337-0a9c-4de5-93b4-e1b4c404ccb5)
+
 
 
 
